@@ -6,7 +6,7 @@
 def calculator(expression: str):
     expression_elems = expression.split(" ")
     operation = expression_elems[1]
-    operand1, operand2 = int(expression_elems[0]), int(expression_elems[2])
+    operand1, operand2 = float(expression_elems[0]), float(expression_elems[2])
     operations = {
         "+": lambda x, y: x + y,
         "-": lambda x, y: x - y,
@@ -17,6 +17,9 @@ def calculator(expression: str):
         "**": lambda x, y: x**y,
         "^": lambda x, y: x**y,
     }
+    error_operations_by_zero = ["/", "//", "%"]
+    if operation in error_operations_by_zero and operand2 == 0:
+        return "Error: Division by zero"
     return operations[operation](operand1, operand2)
 
 
