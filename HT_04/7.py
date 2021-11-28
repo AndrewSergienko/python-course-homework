@@ -7,11 +7,7 @@ def count_identical_elements(data_list):
     result_count = {}
     for i, target in enumerate(data_list):
         if target not in result_count:
-            elem_count = 0
-            for elem in data_list[i:]:
-                if target == elem:
-                    elem_count += 1
-            result_count[target] = elem_count
+            result_count[target] = len(list(filter(lambda x: x == target, data_list)))
     return result_count
 
 
