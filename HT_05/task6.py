@@ -4,10 +4,10 @@
 """
 
 
-def custom_range(start, end=-1, step=1):
+def custom_range(start, end=None, step=1):
     if step == 0:
         raise ValueError("custom_range() arg 3 must not be zero")
-    if end == -1:
+    if end is None:
         end = start
         start = 0
     if step < 0 and start < end:
