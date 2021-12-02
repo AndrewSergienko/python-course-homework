@@ -19,5 +19,5 @@ def custom_range(start, end=None, step=1):
     return
 
 
-print(list(custom_range(10, 0, -1)))
+print(list(custom_range(10, -1, -1)))
 
