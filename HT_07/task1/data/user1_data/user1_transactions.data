@@ -1,0 +1,15 @@
+{date: 07/12/2021, time: 15:13:02, status: "OK", operation: Log-in}
+{date: 07/12/2021, time: 15:15:00, status: "OK", operation: Log-in}
+{date: 07/12/2021, time: 15:16:01, status: "OK", operation: Log-in}
+{date: 07/12/2021, time: 15:16:32, status: "OK", operation: Log-in}
+{date: 07/12/2021, time: 15:17:44, status: "OK", operation: Log-in}
+{date: 07/12/2021, time: 15:18:34, status: "OK", operation: Log-in}
+{date: 07/12/2021, time: 15:18:38, status: "OK", operation: "withdrawal", amount: 1000, balance: 18283}
+{date: 07/12/2021, time: 15:18:46, status: "OK", operation: "withdrawal", amount: 1000, balance: 17283}
+{date: 07/12/2021, time: 15:19:01, status: "OK", operation: "withdrawal", amount: 17283, balance: 0}
+{date: 07/12/2021, time: 15:19:08, status: "OK", operation: "replenishment", amount: 17283, balance: 17283}
+{date: 07/12/2021, time: 15:21:19, status: "OK", operation: Log-in}
+{date: 07/12/2021, time: 15:21:23, status: "OK", operation: "withdrawal", amount: 1000, balance: 16283}
+{date: "07/12/2021", time: "15:24:07", status: "OK", operation: Log-in}
+{date: "07/12/2021", time: "15:25:14", status: "OK", operation: Log-in}
+{date: "07/12/2021", time: "15:25:17", status: "Error", operation: "withdrawal", amount: 10000000000000000000000000, balance: 16283}
