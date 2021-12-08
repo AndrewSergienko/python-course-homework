@@ -14,13 +14,12 @@ def get_balance(user):
 
 
 def update_balance(user, balance, operation, num):
-    match operation:
-        case "replenishment":
-            balance += num
-        case "withdrawal":
-            if num > balance:
-                return
-            balance -= num
+    if operation == "replenishment":
+        balance += num
+    elif operation == "withdrawal":
+        if num > balance:
+            return
+        balance -= num
     set_data(get_user_data_path(user, 'balance'), 'w', str(balance))
     return balance
 
@@ -63,18 +62,19 @@ def main_interface(user):
            "3. Зняти кошти\n" \
            "4. Вихід\n"
     num_action = input(f"{menu}Ваша дія: ")
-    match num_action:
-        case "1":
-            print(f"Ваш баланс: {get_balance(user)}")
-        case "2":
-            num = int(input("Введіть кількість: "))
-            print(transaction(user, 'replenishment', num))
-        case "3":
-            num = int(input("Введіть кількість: "))
-            print(transaction(user, 'withdrawal', num))
-        case "4":
-            print("Завершую роботу")
-            return "Exit"
+    if num_action == "1":
+        print(f"Ваш баланс: {get_balance(user)}")
+    elif num_action == "2":
+        num = int(input("Введіть кількість: "))
+        print(transaction(user, 'replenishment', num))
+    elif num_action == "3":
+        num = int(input("Введіть кількість: "))
+        print(transaction(user, 'withdrawal', num))
+    elif num_action == "4":
+        print("Завершую роботу")
+        return "Exit"
+    else:
+        print("Незрозуміла команда. Спробуйте знову.")
 
 
 def start():

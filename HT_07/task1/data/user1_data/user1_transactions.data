@@ -13,3 +13,6 @@
 {date: "07/12/2021", time: "15:24:07", status: "OK", operation: Log-in}
 {date: "07/12/2021", time: "15:25:14", status: "OK", operation: Log-in}
 {date: "07/12/2021", time: "15:25:17", status: "Error", operation: "withdrawal", amount: 10000000000000000000000000, balance: 16283}
+{date: "09/12/2021", time: "01:04:37", status: "OK", operation: Log-in}
+{date: "09/12/2021", time: "01:04:41", status: "OK", operation: "replenishment", amount: 10, balance: 16293}
+{date: "09/12/2021", time: "01:04:48", status: "OK", operation: "withdrawal", amount: 10, balance: 16283}
