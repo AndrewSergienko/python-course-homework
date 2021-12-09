@@ -14,6 +14,8 @@ def get_balance(user):
 
 
 def update_balance(user, balance, operation, num):
+    if num < 0:
+        return
     if operation == "replenishment":
         balance += num
     elif operation == "withdrawal":
@@ -30,6 +32,8 @@ def transaction(user, operation, num):
     if balance_after is None:
         log_message = f'operation: "{operation}", amount: {num}, balance: {balance}'
         log_action(user, log_message, status='Error')
+        if num < 0:
+            return f"Помилка. Спроба здійснити операцію з від'ємним числом"
         return f"Помилка. На вашому рахнуку недостатьно котштів. Баланс: {balance}"
     balance = balance_after
     log_message = f'operation: "{operation}", amount: {num}, balance: {balance}'
