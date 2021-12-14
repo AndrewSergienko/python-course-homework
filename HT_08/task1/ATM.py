@@ -6,7 +6,7 @@ def operation(operation, num1, num2):
         "+": lambda x, y: x + y,
         "-": lambda x, y: x - y
     }
-    if num1 < 0 or num2 < 0 or operation not in operations:
+    if num1 < 0 or num2 < 0 or operation not in operations or num1 < num2:
         return
     return operations[operation](num1, num2)
 
@@ -19,7 +19,7 @@ def transaction(user, oper, num):
     new_balance = operation(oper, balance, num)
     all_cash = dt.get_banknotes()
     return_cash = get_banknotes_for_return(num, all_cash)
-    if return_cash is None and oper == "-":
+    if return_cash is None and oper == "-" or not cash_validate_operation(return_cash):
         message = f'"status": "ERROR", "operation": "{operations_message[oper]}", "balance": {balance}'
         print("В наявності немає купюр, щоб видати вам повну суму. Спробуйте зняти іншу суму.")
     else:
@@ -174,6 +174,16 @@ def is_valid_banknotes(b_list: list):
         banknote = banknote.split(": ")
         if not is_natural_number(banknote[0]) or not is_natural_number(banknote[1]):
             return False
+    return True
+
+
+def cash_validate_operation(cash: list):
+    banknotes_atm = dt.get_banknotes()
+    for banknote in cash:
+        for banknote_atm in banknotes_atm:
+            if banknote[0] == banknote_atm[0]:
+                if banknote_atm[1] < banknote[1]:
+                    return False
     return True
 
 
