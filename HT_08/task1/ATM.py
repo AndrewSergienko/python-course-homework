@@ -27,6 +27,7 @@ def transaction(user, oper, num):
             status = "ERROR"
             print("Помилка транзакції. Невірні дані. Спробуйте ще раз.")
         else:
+            return_cash = [[key, return_cash[key]] for key in return_cash]
             status = "OK"
             balance = new_balance
             dt.update_balance(user, balance)
@@ -38,20 +39,20 @@ def transaction(user, oper, num):
     dt.log_transaction(user, message)
 
 
-def get_banknotes_for_return(num, banknotes_dict, result_dict=None):
-    if result_dict is None:
-        result_dict = []
+def get_banknotes_for_return(num, cash):
     if num == 0:
-        return result_dict
-    if len(banknotes_dict) == 1 and num % banknotes_dict[0][0] != 0:
+        return dict()
+    if len(cash) == 0:
         return
-    if num // banknotes_dict[0][0] == 0:
-        del banknotes_dict[0]
-        return get_banknotes_for_return(num, banknotes_dict, result_dict)
-    else:
-        result_dict.append([banknotes_dict[0][0], num // banknotes_dict[0][0]])
-        num %= banknotes_dict[0][0]
-        return get_banknotes_for_return(num, banknotes_dict, result_dict)
+    current_banknote = cash[0][0]
+    banknote_num = cash[0][1]
+    banknotes_needed = num // current_banknote
+    notes_num = min(banknote_num, banknotes_needed)
+
+    for i in range(notes_num, -1, -1):
+        result = get_banknotes_for_return(num - i * current_banknote, cash[1:])
+        if result or result == {}:
+            return {current_banknote: i} | result if i else result
 
 
 def update_all_cash(banknotes: list, oper):
@@ -64,7 +65,7 @@ def update_all_cash(banknotes: list, oper):
                 flag = True
                 banknote_atm[1] = operation(oper, banknote_atm[1], banknote[1])
         if not flag and oper == "+":
-            banknotes_atm.append([banknote[0], operation(oper, 0, banknote[1])])
+            banknotes_atm.append([banknote[0], operation(oper, banknote[1], 0)])
     dt.set_cash(banknotes_atm)
 
 
@@ -179,6 +180,7 @@ def is_valid_banknotes(b_list: list):
 
 def cash_validate_operation(cash: list):
     banknotes_atm = dt.get_banknotes()
+    cash = [[key, cash[key]] for key in cash]
     for banknote in cash:
         for banknote_atm in banknotes_atm:
             if banknote[0] == banknote_atm[0]:
