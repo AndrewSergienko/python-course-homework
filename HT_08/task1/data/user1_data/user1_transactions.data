@@ -20,3 +20,8 @@
 {"date": "15/12/2021", "time": "17:34:37", "status": "OK", "operation": "Зняття коштів", "balance": 64940}
 {"date": "15/12/2021", "time": "17:34:46", "status": "ERROR", "operation": "Зняття коштів", "balance": 64940}
 {"date": "15/12/2021", "time": "17:35:05", "status": "ERROR", "operation": "Зняття коштів", "balance": 64940}
+{"date": "15/12/2021", "time": "17:41:09", "status": "ERROR", "operation": "Зняття коштів", "balance": 64940}
+{"date": "15/12/2021", "time": "17:41:35", "status": "ERROR", "operation": "Зняття коштів", "balance": 64940}
+{"date": "15/12/2021", "time": "17:50:15", "status": "OK", "operation": "Зняття коштів", "balance": 64780}
+{"date": "15/12/2021", "time": "17:50:44", "status": "ERROR", "operation": "Зняття коштів", "balance": 64780}
+{"date": "15/12/2021", "time": "17:51:10", "status": "OK", "operation": "Зняття коштів", "balance": 64620}

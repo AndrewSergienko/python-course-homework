@@ -21,7 +21,7 @@ def transaction(user, oper, num):
     return_cash = get_banknotes_for_return(num, all_cash)
     if return_cash is None and oper == "-" or not cash_validate_operation(return_cash):
         message = f'"status": "ERROR", "operation": "{operations_message[oper]}", "balance": {balance}'
-        print("В наявності немає купюр, щоб видати вам повну суму. Спробуйте зняти іншу суму.")
+        print("Невірно введені данні, або в наявності немає купюр, щоб видати вам повну суму. Спробуйте зняти іншу суму.")
     else:
         if new_balance is None:
             status = "ERROR"
