@@ -1,4 +1,5 @@
 import db_tools as dt
+import request_tools as rt
 
 
 def operation(operation, num1, num2):
@@ -86,6 +87,19 @@ def user_menu(user, number_operation):
     elif number_operation == "3":
         num = int(input("Введіть кількість: "))
         transaction(user, "+", num)
+    elif number_operation == "4":
+        result = rt.get_current_exchange_rate()
+        for line in result:
+            print(line)
+    elif number_operation == "5":
+        curr = input("Введіть ініціалі валюти: ")
+        date = input("Введіть дату у форматі <dd.mm.yyyy>: ")
+        for rate in rt.get_archive_exchange_rate(curr, date):
+            print(rate)
+    elif number_operation == "6":
+        convert_operation = input("Ввеідть данні в наступному форматі <валюта1 валюта2 кількість>: ")
+        convert_operation = convert_operation.split(" ")
+        print(rt.convert_currency(convert_operation[0], convert_operation[1], int(convert_operation[2])))
     else:
         return "Exit"
 
@@ -100,7 +114,6 @@ def collector_menu(user, number_operation):
             num = [list(map(int, x.split(": "))) for x in num]
             update_all_cash(num, "+")
             print("Купюри внесено. Наявні купюри: ", format_cash(dt.get_all_banknotes()))
-            message = f'"status": "OK", "operation": "Внесення купюр"'
             dt.log_transaction(user, "Внесення купюр", 0, 0)
         else:
             print("Невірно введені данні. Спробуйте ще раз.")
@@ -125,6 +138,9 @@ def start():
                         "1. Подивитись баланс\n" \
                         "2. Зняти кошти\n" \
                         "3. Поповнити кошти\n" \
+                        "4. Курс валют на сьогодні\n" \
+                        "5. Курс валюти за певний час\n" \
+                        "6. Конвертувати валюту\n"\
                         "інше. Вийти\n"
     collector_menu_message = "=================================\n" \
                              "1. Подивитись список наявних купюр\n" \
