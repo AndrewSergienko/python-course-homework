@@ -79,6 +79,13 @@ def format_cash(cash):
 
 
 def user_menu(user, number_operation):
+    currs = {'UAH': "Гривня", 'RUR': "Російський рубль", 'EUR': "Євро", 'USD': "Американський долар",
+              'BYN': "Білоруський рубель", "CAD": "Канадський долар", "CHF": "Швейцарський франк",
+              "CNY": "Юань Женьміньбі", "CZK": "Чеська крона", "DKK": "Данська крона", "GBP": "Фунт стерлінгів",
+              "GEL": "Грузинський ларі", "HUF": "Угорський форинт", "ILS": "Новий ізраїлсьський шекель",
+              "JPY": "Японська єна", "KZT": "Казахстанський теньге", "MDL": "Молдовський лей",
+              "NOK": "Норвезька крона", "PLN": "Злотий", "SEK": "Шведська крона", "UZS": "Узбецький сум",
+              "SGD": "Сінгапурський долар", "TMT": "Туркменський манат", "TRY": "Турецька ліра"}
     if number_operation == "1":
         print("Ваш баланс:", dt.get_balance(user))
     elif number_operation == "2":
@@ -92,11 +99,17 @@ def user_menu(user, number_operation):
         for line in result:
             print(line)
     elif number_operation == "5":
+        print("Ініціал    Валюта")
+        for curr in currs.keys():
+            print(f"{curr} --- {currs[curr]}")
         curr = input("Введіть ініціалі валюти: ")
         date = input("Введіть дату у форматі <dd.mm.yyyy>: ")
         for rate in rt.get_archive_exchange_rate(curr, date):
             print(rate)
     elif number_operation == "6":
+        print("Ініціал    Валюта")
+        for curr in currs.keys():
+            print(f"{curr} --- {currs[curr]}")
         convert_operation = input("Ввеідть данні в наступному форматі <валюта1 валюта2 кількість>: ")
         convert_operation = convert_operation.split(" ")
         print(rt.convert_currency(convert_operation[0], convert_operation[1], int(convert_operation[2])))

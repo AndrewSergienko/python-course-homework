@@ -2,6 +2,7 @@ import time
 import requests
 import re
 from datetime import datetime
+from datetime import timedelta
 
 
 def request_json(url, params=None):
@@ -20,8 +21,11 @@ def get_current_exchange_rate():
 
 
 def get_archive_exchange_rate(currency, date: str):
+    currs = ['UAH', 'RUR', 'EUR', 'USD', 'BYN', 'CAD', 'CHF', 'CNY', 'CZK',
+             'DKK', 'GBP', 'GEL', 'HUF', 'ILS', 'JPY', 'KZT', 'MDL', 'NOK',
+             'PLN', 'SEK', 'UZS', 'SGD', 'TMT', 'TRY']
     valid_date = re.search(r'(\d{2}\.){2}\d{4}', date).group(0)
-    if valid_date is not None:
+    if valid_date is not None and currency in currs:
         valid_date_parts = list(map(int, valid_date.split('.')))
         target_date = datetime(valid_date_parts[2], valid_date_parts[1], valid_date_parts[0])
         prev_rate = None
@@ -42,7 +46,7 @@ def get_exchange_rate_by_day(currency, date: datetime, prev_rate):
             if currency_response['currency'] == currency:
                 rate = currency_response['saleRateNB']
                 return f"Дата: {body['date']}     НБУ: {rate}" \
-                      f"    {'-----' if prev_rate is None else '{:.3f}'.format(rate-prev_rate)}", rate
+                       f"    {'-----' if prev_rate is None else '{:.3f}'.format(rate - prev_rate)}", rate
         except KeyError:
             pass
 
@@ -63,17 +67,25 @@ def get_next_date(date: datetime):
 
 
 def convert_currency(curr1, curr2, value: int):
-    currs = ['UAH', 'RUR', 'EUR', 'USD']
+    currs = ['UAH', 'RUR', 'EUR', 'USD', 'BYN', 'CAD', 'CHF', 'CNY', 'CZK',
+             'DKK', 'GBP', 'GEL', 'HUF', 'ILS', 'JPY', 'KZT', 'MDL', 'NOK',
+             'PLN', 'SEK', 'UZS', 'SGD', 'TMT', 'TRY']
     if curr1 in currs and curr2 in currs and value >= 0:
-        body = request_json("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")
-        currs_rate = {curr['ccy']: curr['buy'] for curr in body}
+        date = datetime.now()
+        params = {'json': "", 'date': f"{date.day}.{date.month}.{date.year}"}
+        body = request_json("https://api.privatbank.ua/p24api/exchange_rates", params)
+        if not body["exchangeRate"]:
+            date = datetime.now() - timedelta(1)
+            params = {'json': "", 'date': f"{date.day}.{date.month}.{date.year}"}
+            body = request_json("https://api.privatbank.ua/p24api/exchange_rates", params)
+        currs_rate = {curr['currency']: curr["purchaseRateNB"] for curr in body["exchangeRate"][1:]}
         if curr1 == curr2:
             return value
         elif curr1 == "UAH":
-            return value/float(currs_rate[curr2])
+            return value / float(currs_rate[curr2])
         elif curr2 == "UAH":
-            return value*float(currs_rate[curr1])
+            return value * float(currs_rate[curr1])
         else:
-            uah = value*float(currs_rate[curr1])
-            return uah/float(currs_rate[curr2])
+            uah = value * float(currs_rate[curr1])
+            return uah / float(currs_rate[curr2])
     return "Неправильні данні або помилка відповіді від серверу. Спробуйте ввести інші дані або српобуйте пізніше"
