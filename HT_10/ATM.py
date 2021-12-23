@@ -143,7 +143,7 @@ def login(username, password):
     user = dt.get_user(username)
     if password == user[1]:
         return user[0], user[2]
-    return False
+    return None, None
 
 
 def start():
