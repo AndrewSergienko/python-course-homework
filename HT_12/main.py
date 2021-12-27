@@ -1,9 +1,9 @@
 import csv
-
+import os.path
+import create_db
 from bs4 import BeautifulSoup
 import requests
 import sqlite3
-import csv_create
 
 
 def parse_quotes(url=None):
@@ -75,5 +75,8 @@ def write_csv(quote: dict, author: dict):
             writer = csv.writer(cf, delimiter=';')
             writer.writerow([author['name'], author['date'], author['place']])
 
+
+if not os.path.exists('quotes.db'):
+    create_db.create()
 
 parse_quotes()
