@@ -6,6 +6,21 @@ import requests
 import sqlite3
 
 
+if not os.path.exists('quotes.db'):
+    create_db.create()
+
+
+if not os.path.exists('authors.csv'):
+    with open('authors.csv', 'w') as cf:
+        writer = csv.writer(cf, delimiter=';')
+        writer.writerow(['Author', 'Date of birth', 'Location of birth'])
+
+if not os.path.exists('quotes.csv'):
+    with open('quotes.csv', 'w') as cf:
+        writer = csv.writer(cf, delimiter=';')
+        writer.writerow(['Author', 'Quote'])
+
+
 def parse_quotes(url=None):
     default_url = "http://quotes.toscrape.com/"
     if url is None:
@@ -75,8 +90,5 @@ def write_csv(quote: dict, author: dict):
             writer = csv.writer(cf, delimiter=';')
             writer.writerow([author['name'], author['date'], author['place']])
 
-
-if not os.path.exists('quotes.db'):
-    create_db.create()
 
 parse_quotes()

@@ -2,7 +2,7 @@ import sqlite3
 
 
 def create():
-    con = sqlite3.connect('database.db')
+    con = sqlite3.connect('quotes.db')
     cur = con.cursor()
     cur.execute("""CREATE TABLE authors (
                 name text NOT NULL PRIMARY KEY,
