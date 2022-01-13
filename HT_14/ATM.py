@@ -140,7 +140,11 @@ class ATM:
                                  "2. Заправити готівку\n" \
                                  "інше. Вийти\n"
         for i in range(3, 0, -1):
-            login, password = input(f"Введіть логін і пароль через пробіл. Залишилось спроб: {i} - ").split(' ')
+            data = input(f"Введіть логін і пароль через пробіл. Залишилось спроб: {i} - ").split(' ')
+            if len(data) == 2:
+                login, password = data
+            else:
+                login = password = None
             auth_result = self.auth(login, password)
             if auth_result:
                 print(f"Вітаю. Ви зайшли в систему як {self.current_user.type}")

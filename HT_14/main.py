@@ -12,7 +12,7 @@ for atm in atm_list:
     print(f'№{atm}')
 
 atm_num = input('Виберіть номер банкомата, в якому бажаєте провести операцію: ')
-if atm_num not in atm_list:
+if int(atm_num) not in atm_list:
     print('Банкомата з таким номером не існує. Завершую роботу')
 else:
     atm = ATM(int(atm_num))
