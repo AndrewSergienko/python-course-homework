@@ -10,18 +10,18 @@ from scrapy.exporters import CsvItemExporter
 
 
 class NewsPipeline:
+    def open_spider(self, spider):
+        self.file = open('temp.csv', 'ab')
+        self.exporter = CsvItemExporter(self.file)
+        self.exporter.fields_to_export = ['title', 'content', 'tags', 'url']
+        self.exporter.start_exporting()
+
     def process_item(self, item, spider):
-        if spider.csv_exporter_start_flag:
-            self.exporter.export_item(item)
-        else:
-            self.file = open(f'{spider.date.replace("/", "_")}.csv', 'ab')
-            self.exporter = CsvItemExporter(self.file)
-            self.exporter.fields_to_export = ['title', 'content', 'tags', 'url']
-            self.exporter.start_exporting()
-            self.exporter.export_item(item)
-            spider.csv_exporter_start_flag = True
+        self.exporter.export_item(item)
         return item
 
-    def spider_closed(self):
+    def close_spider(self, spider):
+        import os
         self.exporter.finish_exporting()
         self.file.close()
+        os.rename('temp.csv', f'{spider.date.replace("/", "_")}.csv')
