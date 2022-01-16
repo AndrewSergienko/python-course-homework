@@ -42,10 +42,6 @@ class NewsSpider(scrapy.Spider):
             info_url = news.select_one('.title-cat-post a').get('href')
             yield scrapy.Request(url=info_url, callback=self.parse_news_info)
 
-    def parse_news(self, news):
-        info_url = news.select_one('.title-cat-post a')
-        yield scrapy.Request(url=info_url, callback=self.parse_news_info)
-
     def parse_news_info(self, response):
         soup = BeautifulSoup(response.text, 'lxml')
         content = soup.select_one('.entry-content')
