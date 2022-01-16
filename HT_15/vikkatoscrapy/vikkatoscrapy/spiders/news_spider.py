@@ -53,7 +53,8 @@ class NewsSpider(scrapy.Spider):
         url = response.url
         title = soup.select_one('.post-title').text
         text = self.get_text(content)
-        tags = ', '.join([f'#{tag.get_text()}' for tag in tags_ul])
+        if tags_ul is not None:
+            tags = ', '.join([f'#{tag.get_text()}' for tag in tags_ul])
 
         yield NewsItem(title=title, content=text, tags=tags, url=url)
 
