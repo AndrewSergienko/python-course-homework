@@ -41,6 +41,9 @@ class NewsSpider(scrapy.Spider):
         for news in news_list:
             info_url = news.select_one('.title-cat-post a').get('href')
             yield scrapy.Request(url=info_url, callback=self.parse_news_info)
+        next_page = soup.select_one('.next')
+        if next_page is not None:
+            yield scrapy.Request(url=next_page.get('href'), callback=self.parse)
 
     def parse_news_info(self, response):
         soup = BeautifulSoup(response.text, 'lxml')
@@ -49,7 +52,17 @@ class NewsSpider(scrapy.Spider):
 
         url = response.url
         title = soup.select_one('.post-title').text
-        text = content.get_text(separator='\n')
+        text = self.get_text(content)
         tags = ', '.join([f'#{tag.get_text()}' for tag in tags_ul])
 
         yield NewsItem(title=title, content=text, tags=tags, url=url)
+
+    def get_text(self, content: BeautifulSoup):
+        text_elems = ['.']
+        for string in content.stripped_strings:
+            if text_elems[-1][-1] != '.':
+                text_elems[-1] = f'{text_elems[-1]} {string}'
+            else:
+                text_elems.append(string)
+        del text_elems[0]
+        return '\n'.join(text_elems)

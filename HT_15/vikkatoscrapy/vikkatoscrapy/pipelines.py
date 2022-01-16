@@ -24,4 +24,6 @@ class NewsPipeline:
         import os
         self.exporter.finish_exporting()
         self.file.close()
+        if os.path.exists(f'{spider.date.replace("/", "_")}.csv'):
+            os.remove(f'{spider.date.replace("/", "_")}.csv')
         os.rename('temp.csv', f'{spider.date.replace("/", "_")}.csv')
