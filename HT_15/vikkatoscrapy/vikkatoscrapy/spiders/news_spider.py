@@ -14,7 +14,6 @@ class NewsSpider(scrapy.Spider):
         urls = [
             'https://www.vikka.ua/'
         ]
-        self.csv_exporter_start_flag = False
         for url in urls:
             self.date = self.select_date()
             yield scrapy.Request(url=f"{url}{self.date}/", callback=self.parse)
