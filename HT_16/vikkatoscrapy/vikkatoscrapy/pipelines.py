@@ -27,7 +27,3 @@ class NewsPipeline:
     def close_spider(self, spider):
         self.con.commit()
         self.con.close()
-
-
-
-
