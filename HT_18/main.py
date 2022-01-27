@@ -1,11 +1,13 @@
 import csv
 import requests
+from sys import argv
 
 from Item import Item
 
 
 def start():
-    type = input('Input type items: ')
+    type = argv[1]
+    print(type)
     if type == '':
         type = 'newstories'
     elif type not in ['askstories', 'showstories', 'newstories', 'jobstories']:
