@@ -10,22 +10,26 @@ def start():
         type = ''
     else:
         type = argv[1]
-    print(type)
     if type == '':
         type = 'newstories'
     elif type not in ['askstories', 'showstories', 'newstories', 'jobstories']:
         print('Invalid type. Finish work.')
         return
-    items = get_items(type)
-    write_csv(type, items)
+    items, items_unique_field_names = get_items(type)
+    write_csv(type, items, items_unique_field_names)
 
 
 def get_items(type):
     items_id = requests.get(f'https://hacker-news.firebaseio.com/v0/{type}.json').json()
     items = []
+    items_unique_field_names = set()
     for item_id in items_id:
-        items.append(get_item_obj(item_id))
-    return items
+        item = get_item_obj(item_id)
+        items.append(item)
+        for field_name in item.__dict__.keys():
+            items_unique_field_names.add(field_name)
+    print(items_unique_field_names)
+    return items, items_unique_field_names
 
 
 def get_item_obj(item_id):
@@ -33,11 +37,8 @@ def get_item_obj(item_id):
     return Item(item_info)
 
 
-def write_csv(type, items):
+def write_csv(type, items, field_names):
     with open(f'{type}.csv', 'w', encoding='utf-8') as file:
-        field_names = ['id', 'deleted', 'type', 'by', 'time',
-                         'text', 'dead', 'parent', 'poll', 'kids',
-                         'url', 'score', 'title', 'parts', 'descendants']
         writer = csv.DictWriter(file, fieldnames=field_names)
         writer.writeheader()
         for item in items:
