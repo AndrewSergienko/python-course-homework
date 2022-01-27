@@ -6,7 +6,10 @@ from Item import Item
 
 
 def start():
-    type = argv[1]
+    if len(argv) == 1:
+        type = ''
+    else:
+        type = argv[1]
     print(type)
     if type == '':
         type = 'newstories'
