@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HT_19</title>
+    <link rel="stylesheet" href="{% static 'stories/style.css' %}">
+</head>
+<body>
+    {% if saved == 'true' %}
+        <div class="alert success">
+          <span class="closebtn">&times;</span>
+          <strong>Success!</strong> {{ type }} stories saved in database!
+        </div>
+    {% endif %}
+    {% if saved == 'warning' %}
+        <div class="alert">
+          <span class="closebtn">&times;</span>
+          <strong>Warning!</strong> Wrong type specified or other error.
+        </div>
+    {% endif %}
+    <div class="dropdown">
+      <button class="dropbtn">Stories</button>
+      <div class="dropdown-content">
+        <a href="?type=ask">Ask</a>
+        <a href="?type=show">Show</a>
+        <a href="?type=new">New</a>
+        <a href="?type=job">Job</a>
+      </div>
+    </div>
+</body>
+<script>
+var close = document.getElementsByClassName("closebtn");
+var i;
+
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function(){
+    var div = this.parentElement;
+    div.style.opacity = "0";
+    setTimeout(function(){ div.style.display = "none"; }, 600);
+  }
+}
+</script>
+</html>
