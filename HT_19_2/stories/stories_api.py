@@ -16,6 +16,8 @@ def get_items(type, ids_in_db: set):
     items = []
     for item_id in missing_ids:
         item = get_item_obj(item_id)
+        if item is None:
+            continue
         items.append(item)
         for field_name in item.__dict__.keys():
             items_unique_attrs.add(field_name)
@@ -26,8 +28,9 @@ def get_items(type, ids_in_db: set):
 
 def get_item_obj(item_id):
     item_info = requests.get(f'https://hacker-news.firebaseio.com/v0/item/{item_id}.json').json()
-    item_obj = Item(item_info)
-    return item_obj
+    if item_info is not None:
+        item_obj = Item(item_info)
+        return item_obj
 
 
 def filling_attributes(item, unique_attrs):

@@ -7,25 +7,24 @@
     <link rel="stylesheet" href="{% static 'stories/style.css' %}">
 </head>
 <body>
-    {% if saved == 'true' %}
+    {% if saved_status == 'success' %}
         <div class="alert success">
           <span class="closebtn">&times;</span>
-          <strong>Success!</strong> {{ type }} stories saved in database!
+          <strong>Success!</strong> Stories saved in database!
         </div>
-    {% endif %}
-    {% if saved == 'warning' %}
+    {% elif saved_status == 'error' %}
         <div class="alert">
           <span class="closebtn">&times;</span>
-          <strong>Warning!</strong> Wrong type specified or other error.
+          <strong>Eror!</strong> Wrong type specified or other error.
         </div>
     {% endif %}
     <div class="dropdown">
       <button class="dropbtn">Stories</button>
       <div class="dropdown-content">
-        <a href="?type=ask">Ask</a>
-        <a href="?type=show">Show</a>
-        <a href="?type=new">New</a>
-        <a href="?type=job">Job</a>
+        <a href="{% url 'stories:stories_write' 'ask' %}" methods="">Ask</a>
+        <a href="{% url 'stories:stories_write' 'show' %}">Show</a>
+        <a href="{% url 'stories:stories_write' 'new' %}">New</a>
+        <a href="{% url 'stories:stories_write' 'job' %}">Job</a>
       </div>
     </div>
 </body>

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 
 from . import stories_api
 from .models import Ask, New, Job, Show
@@ -7,20 +7,16 @@ from datetime import datetime
 
 
 def stories_index(request):
-    context = {'saved': 'none', 'type': 'none'}
-    if 'type' in request.GET:
-        if save_stories(request.GET['type']):
-            context['saved'] = 'true'
-        else:
-            context['saved'] = 'warning'
-        context['type'] = request.GET['type']
+    context = {'saved_status': None}
+    if 'saved_status' in request.GET:
+        context['saved_status'] = request.GET['saved_status']
     return render(request, 'stories/index.html', context=context)
 
 
 def get_stories_class(type):
     types = {
         'ask': Ask,
-        'news': New,
+        'new': New,
         'job': Job,
         'show': Show
     }
@@ -66,15 +62,16 @@ def create_stories_object(type, item):
         return story_obj
 
 
-def save_stories(type):
+def stories_save(request, type):
     stories = stories_api.get_items(type, get_stories_id(type))
+    base_url = reverse('stories:stories_index')
     if stories is not None:
         for story in stories:
             story = create_stories_object(type, story)
             if story is not None:
                 story.save()
-        return True
-    return False
+        return redirect(f'{base_url}?saved_status=success')
+    return redirect(f'{base_url}?saved_status=error')
 
 
 
