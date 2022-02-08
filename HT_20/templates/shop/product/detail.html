@@ -11,8 +11,13 @@
             {% static "img/no_image.png" %}{% endif %}">
         <h1>{{ product.name }}</h1>
         <h2>
+            Категорія:
             <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
         </h2>
+        {% if request.user.is_superuser %}
+        <h2><a href="{% url "shop:product_edit" product.id product.slug %}">Редагувати</a></h2>
+        <h2><a href="{% url "shop:product_remove" product.id product.slug %}">Видалити</a></h2>
+        {% endif %}
         <p class="price">${{ product.price }}</p>
         <form action="{% url 'cart:cart_add' product.id %}" method="post">
             {{ cart_product_form }}
