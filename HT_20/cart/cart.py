@@ -10,6 +10,7 @@ class Cart:
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
+        self.update_price()
 
     def add(self, product, quantity=1, update_quantity=False):
         product_id = str(product.id)
@@ -56,3 +57,8 @@ class Cart:
     def clear(self):
         del self.session[settings.CART_SESSION_ID]
         self.save()
+
+    def update_price(self):
+        for product_id in self.cart:
+            product = Product.objects.get(id=product_id)
+            self.cart[product_id]['price'] = str(product.price)
