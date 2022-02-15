@@ -19,11 +19,37 @@
         <h2><a href="{% url "shop:product_remove" product.id product.slug %}">Видалити</a></h2>
         {% endif %}
         <p class="price">${{ product.price }}</p>
-        <form action="{% url 'cart:cart_add' product.id %}" method="post">
+        <form method="post">
             {{ cart_product_form }}
             {%  csrf_token %}
-            <input type="submit" value="Add to cart">
+            <input type="submit" value="Add to cart" id="add_cart_submit">
         </form>
         {{ product.description|linebreaks }}
     </div>
+    <script>
+        let addCart = document.getElementById('add_cart_submit')
+        addCart.onclick = function()
+            {
+                let quantity = document.getElementById('id_quantity')
+                let update = document.getElementById('id_update')
+                let csrf = document.getElementsByName('csrfmiddlewaretoken')[0]
+
+                let formData = new FormData()
+                formData.append(quantity.name, quantity.value)
+                formData.append(update.name, update.value)
+                formData.append(csrf.name, csrf.value)
+
+                var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.onreadystatechange = function()
+                    {
+                        if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                        {
+                            alert('Товар додано до корзини.')
+                        }
+                    }
+                xmlHttp.open("POST", "{% url 'cart:cart_add' product.id %}");
+                xmlHttp.setRequestHeader("X-CSRFToken", csrf.value)
+                xmlHttp.send(formData);
+        }
+    </script>
 {% endblock %}
