@@ -21,8 +21,7 @@ def stories_save(request, type):
         for story_id in stories:
             save_list.append(tasks.save_story.s(type, story_id))
         result_group = group(save_list)
-        result = result_group.apply_async()
-        result.join()
+        result_group.apply_async()
         return redirect(f'{base_url}?saved_status=success')
     return redirect(f'{base_url}?saved_status=error')
 
