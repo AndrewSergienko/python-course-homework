@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os
 from pathlib import Path
-from HT_19_2.local_settings import *
+
+try:
+    from HT_19_2.local_settings import *
+except ImportError:
+    SECRET_KEY = 'django-insecure-a$04+np4y!5nahk(y2j=akg*p&ecyi)qt8%o4=%&ow3x*u^7h&'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
